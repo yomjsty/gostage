@@ -1,0 +1,186 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(uuid())
+  email         String    @unique
+  name          String
+  emailVerified Boolean
+  image         String?
+  createdAt     DateTime
+  updatedAt     DateTime
+  sessions      Session[]
+  accounts      Account[]
+  events        Event[]
+
+  role              String?
+  banned            Boolean?
+  banReason         String?
+  banExpires        DateTime?
+  TicketReservation TicketReservation[]
+  Ticket            Ticket[]
+
+  @@map("user")
+}
+
+model Session {
+  id        String   @id
+  expiresAt DateTime
+  token     String
+  createdAt DateTime
+  updatedAt DateTime
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  impersonatedBy String?
+
+  @@unique([token])
+  @@map("session")
+}
+
+model Account {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime
+  updatedAt             DateTime
+
+  @@map("account")
+}
+
+model Verification {
+  id         String    @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime?
+  updatedAt  DateTime?
+
+  @@map("verification")
+}
+
+model Event {
+  id String @id @default(uuid())
+
+  title             String
+  slug              String      @unique
+  featuredImage     String
+  description       String
+  startDate         DateTime
+  endDate           DateTime
+  location          String
+  locationLink      String?
+  mode              EventMode
+  maxTicketsPerUser Int         @default(4)
+  status            EventStatus @default(DRAFT)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  categories TicketCategory[]
+
+  @@map("event")
+}
+
+enum EventStatus {
+  DRAFT
+  PUBLISHED
+}
+
+enum EventMode {
+  ONLINE
+  OFFLINE
+}
+
+model TicketCategory {
+  id       String @id @default(uuid())
+  name     String
+  price    Int
+  quota    Int
+  sold     Int    @default(0)
+  reserved Int    @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  event   Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  eventId String
+
+  reservations TicketReservation[]
+  tickets      Ticket[]
+
+  @@map("ticket_category")
+}
+
+model TicketReservation {
+  id     String @id @default(uuid())
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  category   TicketCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  categoryId String
+
+  quantity Int
+  status   ReservationStatus @default(PENDING)
+
+  createdAt DateTime @default(now())
+  expiresAt DateTime
+
+  tickets Ticket[]
+
+  @@index([status])
+  @@index([expiresAt])
+  @@map("ticket_reservation")
+}
+
+enum ReservationStatus {
+  PENDING
+  PAID
+  EXPIRED
+}
+
+model Ticket {
+  id      String @id @default(uuid())
+  owner   User   @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  ownerId String
+
+  category   TicketCategory @relation(fields: [categoryId], references: [id])
+  categoryId String
+
+  reservation   TicketReservation? @relation(fields: [reservationId], references: [id])
+  reservationId String?
+
+  qrCode String  @unique
+  isUsed Boolean @default(false)
+
+  createdAt DateTime @default(now())
+
+  @@map("ticket")
+}
