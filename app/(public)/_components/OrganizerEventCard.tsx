@@ -9,10 +9,30 @@ import { EventSingleCard } from "./EventSingleCard";
 import { Button, buttonVariants } from "@/components/ui/button";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-import { EyeIcon, PencilIcon, TrashIcon } from "lucide-react";
+import { EyeIcon, Loader2, PencilIcon, TrashIcon } from "lucide-react";
+import {
+    AlertDialog,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
+import { tryCatch } from "@/hooks/try-catch";
+import { deleteEvent } from "../my-events/actions";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import { useQueryClient } from "@tanstack/react-query";
+import { useState, useTransition } from "react";
 
 export function OrganizerEventCard() {
     const { data: myEvents, isLoading, error } = useGetMyEvents()
+    const router = useRouter()
+    const queryClient = useQueryClient()
+    const [isPending, startTransition] = useTransition();
+    const [eventToDelete, setEventToDelete] = useState<string | null>(null);
 
     if (isLoading) return (
         <>
@@ -36,12 +56,35 @@ export function OrganizerEventCard() {
 
     if (!myEvents || myEvents.length === 0) {
         return (
-            <div className="flex flex-col items-center justify-center py-12 text-center">
+            <div className="flex flex-col items-center justify-center py-12 text-center col-span-full">
                 <div className="text-6xl mb-4">📅</div>
                 <h3 className="text-lg font-semibold mb-2">No events found</h3>
                 <p className="text-muted-foreground">You haven&apos;t created any events yet.</p>
             </div>
         )
+    }
+
+    const handleDeleteEvent = async (eventId: string) => {
+        startTransition(async () => {
+            const { data: result, error } = await tryCatch(deleteEvent(eventId))
+
+            if (error) {
+                toast.error("An unexpected error occurred. Please try again later.")
+                return
+            }
+
+            if (result.status === "success") {
+                setEventToDelete(null);
+                toast.success(result.message)
+                await Promise.all([
+                    queryClient.invalidateQueries({ queryKey: ['my-events'] }),
+                    queryClient.invalidateQueries({ queryKey: ['events'] }),
+                ])
+                router.refresh();
+            } else if (result.status === "error") {
+                toast.error(result.message)
+            }
+        })
     }
 
     return (
@@ -54,13 +97,47 @@ export function OrganizerEventCard() {
                             <PencilIcon className="size-3" />
                             Edit
                         </Link>
-                        <Link className={cn(buttonVariants({ variant: "outline", className: "flex-1" }))} href={`/event/${event.slug}`} target="_blank">
-                            <EyeIcon className="size-3" />
-                            Preview
-                        </Link>
-                        <Button variant="destructive" className="flex-1">
-                            <TrashIcon className="size-3" />
-                        </Button>
+                        {event.status === "DRAFT" ? (
+                            <Button variant="outline" className="flex-1" disabled>
+                                <EyeIcon className="size-3" />
+                                Preview
+                            </Button>
+                        ) : (
+                            <Link className={cn(buttonVariants({ variant: "outline", className: "flex-1" }))} href={`/event/${event.slug}`} target="_blank">
+                                <EyeIcon className="size-3" />
+                                Preview
+                            </Link>
+                        )}
+                        <AlertDialog open={eventToDelete === event.id} onOpenChange={(open) => setEventToDelete(open ? event.id : null)}>
+                            <AlertDialogTrigger asChild>
+                                <Button variant="destructive" className="flex-1">
+                                    <TrashIcon className="size-3" />
+                                </Button>
+                            </AlertDialogTrigger>
+                            <AlertDialogContent>
+                                <AlertDialogHeader>
+                                    <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                                    <AlertDialogDescription>
+                                        This action cannot be undone. This will permanently delete your event and all associated data.
+                                    </AlertDialogDescription>
+                                </AlertDialogHeader>
+                                <AlertDialogFooter>
+                                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                    <Button
+                                        variant="destructive"
+                                        onClick={() => handleDeleteEvent(event.id)}
+                                        disabled={isPending}
+                                    >
+                                        {isPending ? (
+                                            <>
+                                                <Loader2 className="size-3 animate-spin" />
+                                                Deleting...
+                                            </>
+                                        ) : "Delete"}
+                                    </Button>
+                                </AlertDialogFooter>
+                            </AlertDialogContent>
+                        </AlertDialog>
                     </div>
                 </div>
             ))}

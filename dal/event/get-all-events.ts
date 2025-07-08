@@ -1,10 +1,11 @@
+import db from "@/lib/db"
 import "server-only"
 
-import db from '@/lib/db'
-
-export async function getOrganizerEvents(userId: string) {
+export async function getAllEvents() {
     return await db.event.findMany({
-        where: { userId },
+        where: {
+            status: "PUBLISHED"
+        },
         orderBy: { createdAt: 'desc' },
         select: {
             id: true,
@@ -13,18 +14,16 @@ export async function getOrganizerEvents(userId: string) {
             featuredImage: true,
             description: true,
             startDate: true,
-            endDate: true,
             location: true,
             mode: true,
-            status: true,
             categories: {
                 select: {
                     sold: true,
                     quota: true,
                 }
             }
-        },
+        }
     })
 }
 
-export type OrganizerEvent = Awaited<ReturnType<typeof getOrganizerEvents>>[0]
+export type AllEventType = Awaited<ReturnType<typeof getAllEvents>>[0]

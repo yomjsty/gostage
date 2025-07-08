@@ -164,7 +164,7 @@ export default function RegisterTabs() {
               </FormItem>
             )}
           />
-          <Button type="submit" disabled={emailPending} className="w-full">Login</Button>
+          <Button type="submit" disabled={emailPending} className="w-full">Register</Button>
         </form>
       </Form>
     </div>

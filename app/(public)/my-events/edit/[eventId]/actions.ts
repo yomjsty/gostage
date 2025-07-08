@@ -180,3 +180,90 @@ export async function createTicketCategory(values: TicketCategorySchemaType, eve
         }
     }
 }
+
+export async function updateTicketCategory(values: TicketCategorySchemaType, categoryId: string): Promise<ApiResponse> {
+    const user = await requireUser();
+
+    if (user.role !== "admin" && user.role !== "organizer") {
+        return {
+            status: "error",
+            message: "You are not authorized to update ticket category",
+        }
+    }
+
+    try {
+        const result = ticketCategorySchema.safeParse(values)
+
+        if (!result.success) {
+            return {
+                status: "error",
+                message: "Invalid data"
+            }
+        }
+
+        const existingCategory = await db.ticketCategory.findFirst({
+            where: {
+                id: categoryId,
+                event: {
+                    userId: user.id,
+                },
+            },
+            include: {
+                event: true,
+            },
+        })
+
+        if (!existingCategory) {
+            return {
+                status: "error",
+                message: "Ticket category not found",
+            }
+        }
+
+        await db.ticketCategory.update({
+            where: { id: categoryId },
+            data: {
+                name: result.data.name,
+                price: result.data.price,
+                quota: result.data.quota,
+            }
+        })
+
+        return {
+            status: "success",
+            message: "Ticket category updated successfully"
+        }
+    } catch {
+        return {
+            status: "error",
+            message: "Failed to update ticket category",
+        }
+    }
+}
+
+export async function deleteTicketCategory(categoryId: string, eventId: string): Promise<ApiResponse> {
+    const user = await requireUser();
+
+    if (user.role !== "admin" && user.role !== "organizer") {
+        return {
+            status: "error",
+            message: "You are not authorized to delete an event",
+        }
+    }
+
+    try {
+        await db.ticketCategory.delete({
+            where: { id: categoryId, eventId },
+        })
+
+        return {
+            status: "success",
+            message: "Ticket category deleted successfully",
+        }
+    } catch {
+        return {
+            status: "error",
+            message: "Failed to delete ticket category",
+        }
+    }
+}

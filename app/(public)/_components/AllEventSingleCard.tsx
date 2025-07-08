@@ -1,16 +1,16 @@
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { OrganizerEvent } from "@/dal/organizer/get-organizer-events";
+import { AllEventType } from "@/dal/event/get-all-events";
 import { useConstructUrl } from "@/hooks/use-construct-url";
 import Image from "next/image";
 import Link from "next/link";
 
 interface iAppProps {
-    data: OrganizerEvent
+    data: AllEventType
 }
 
-export function EventSingleCard({ data }: iAppProps) {
+export function AllEventSingleCard({ data }: iAppProps) {
     const thumbnailUrl = useConstructUrl(data.featuredImage);
     const startDate = new Date(data.startDate);
 

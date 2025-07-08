@@ -19,6 +19,7 @@ import Link from "next/link"
 import { AuthModal } from "./AuthModal"
 import { authClient } from "@/lib/auth-client"
 import { UserButton } from "@/components/user/UserButton"
+import { ModeToggle } from "@/components/mode-toggle"
 
 const navigationLinks = [
   { href: "/", label: "Home" },
@@ -29,7 +30,7 @@ export function Navbar() {
   const { data: session, isPending } = authClient.useSession()
 
   return (
-    <header className="border-b">
+    <header className="border-b bg-background">
       <div className="flex h-16 items-center justify-between gap-4 container mx-auto px-4 md:px-6 lg:px-8">
         {/* Left side */}
         <div className="flex flex-1 items-center gap-2">
@@ -118,6 +119,7 @@ export function Navbar() {
           </div>
         </div>
         {/* Right side */}
+        <ModeToggle />
         {isPending ? null : session ? (
           <UserButton name={session.user?.name} email={session.user?.email} image={session?.user.image ?? `https://avatar.vercel.sh/${session?.user.email}`} role={session?.user?.role ?? undefined} />
         ) : (

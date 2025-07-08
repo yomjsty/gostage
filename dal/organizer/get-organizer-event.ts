@@ -1,6 +1,7 @@
+import "server-only"
+
 import db from "@/lib/db"
 import { notFound } from "next/navigation"
-import "server-only"
 import { requireUser } from "../user/require-user"
 
 export async function getOrganizerEvent(eventId: string) {

@@ -34,7 +34,6 @@ export function AuthModal({ type, name }: iAppProps) {
             onOpenChange={(isOpen) => {
                 setOpen(isOpen)
                 if (isOpen) {
-                    // reset tab ke default type
                     setActiveTab(type)
                 }
             }}
