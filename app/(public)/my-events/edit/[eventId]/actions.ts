@@ -129,7 +129,7 @@ export async function updateEventStatus(eventId: string, status: "PUBLISHED" | "
 
         const action = status === "PUBLISHED" ? "published" : "drafted";
 
-        revalidatePath("/")
+        revalidatePath("/dashboard")
 
         return {
             status: "success",
