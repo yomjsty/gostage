@@ -3,9 +3,17 @@
 import { notFound, useSearchParams } from 'next/navigation'
 import { PaymentSuccess } from "./_components/PaymentSuccess"
 import { PaymentFailed } from "./_components/PaymentFailed"
+import { Suspense } from "react"
 
+export default function PaymentRoute() {
+    return (
+        <Suspense>
+            <PaymentPage />
+        </Suspense>
+    )
+}
 
-export default function PaymentPage() {
+function PaymentPage() {
     const searchParams = useSearchParams()
     const result = searchParams.get('result')
 
