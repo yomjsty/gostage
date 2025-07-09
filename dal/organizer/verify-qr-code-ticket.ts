@@ -1,8 +1,8 @@
 import db from "@/lib/db"
 
-export async function verifyQRCodeTicket(qrCode: string) {
+export async function verifyQRCodeTicket(qrCode: string, userId: string) {
     return await db.ticket.findUnique({
-        where: { qrCode },
+        where: { qrCode, category: { event: { userId } } },
         select: {
             id: true,
             isUsed: true,

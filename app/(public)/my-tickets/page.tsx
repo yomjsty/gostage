@@ -68,6 +68,16 @@ async function RenderUserTickets() {
 
     const groupedEvents = groupTicketsByEvent(tickets)
 
+    if (groupedEvents.length === 0) {
+        return (
+            <div className="flex flex-col items-center justify-center py-12 text-center col-span-full">
+                <div className="text-6xl mb-4">🎟️</div>
+                <h3 className="text-lg font-semibold mb-2">No tickets found</h3>
+                <p className="text-muted-foreground">You haven&apos;t purchased any tickets yet.</p>
+            </div>
+        )
+    }
+
     return (
         <div className="grid gap-4">
             {groupedEvents.map((group) => (

@@ -3,10 +3,9 @@ import { redirect } from "next/navigation";
 import { Suspense } from "react";
 import { AccountForm } from "./_components/AccountForm";
 import { Loader2 } from "lucide-react";
+import { SecurityForm } from "./_components/SecurityForm";
 
 export default function ProfilePage() {
-
-
     return (
         <div className="space-y-4">
             <h1 className="text-2xl font-bold">Account Settings</h1>
@@ -16,13 +15,13 @@ export default function ProfilePage() {
                     Loading Account Info...
                 </div>
             }>
-                <RenderAccountForm />
+                <RenderSettingsForm />
             </Suspense>
         </div>
     )
 }
 
-async function RenderAccountForm() {
+async function RenderSettingsForm() {
     const user = await requireUser();
 
     if (!user) {
@@ -30,13 +29,16 @@ async function RenderAccountForm() {
     }
 
     return (
-        <AccountForm
-            user={{
-                name: user.name,
-                email: user.email,
-                phoneNumber: user.phoneNumber ?? "",
-                address: user.address ?? ""
-            }}
-        />
+        <div className="space-y-4">
+            <AccountForm
+                user={{
+                    name: user.name,
+                    email: user.email,
+                    phoneNumber: user.phoneNumber ?? "",
+                    address: user.address ?? ""
+                }}
+            />
+            <SecurityForm userId={user.id} />
+        </div>
     )
 }

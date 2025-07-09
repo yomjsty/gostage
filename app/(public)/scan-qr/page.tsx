@@ -1,6 +1,6 @@
 "use client";
 
-import { Badge } from "@/components/ui/badge";
+// import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
     Card, CardContent, CardDescription,
@@ -174,7 +174,7 @@ export default function QRScannerPage() {
                                         <p className="text-sm text-yellow-600 font-semibold mb-2">Ticket is already used</p>
                                     )}
                                     <div className="flex items-center gap-3 text-xs lg:text-sm font-medium tracking-wide">
-                                        <div className="flex flex-col gap-1.5 shrink-0 w-fit">
+                                        <div className="flex flex-col gap-3 lg:gap-1.5 shrink-0 w-fit">
                                             <p>Event:</p>
                                             <p>Order ID:</p>
                                             <p>Ticket ID:</p>
@@ -183,13 +183,14 @@ export default function QRScannerPage() {
                                             <p>Status:</p>
                                             <p>Bought By:</p>
                                         </div>
-                                        <div className="flex flex-col gap-1.5">
+                                        <div className="flex flex-col gap-3 lg:gap-1.5">
                                             <p className="line-clamp-1">{ticketData.category.event.title}</p>
                                             <p className="line-clamp-1">{ticketData.reservation?.orderId}</p>
                                             <p className="line-clamp-1">{ticketData.id}</p>
                                             <p className="line-clamp-1">{ticketData.category.name}</p>
                                             <p className="line-clamp-1 font-bold">Rp {ticketData.category.price.toLocaleString()}</p>
-                                            <Badge variant="default">{ticketData.reservation?.status}</Badge>
+                                            {/* <Badge variant="default">{ticketData.reservation?.status}</Badge> */}
+                                            <p className="line-clamp-1 text-primary">{ticketData.reservation?.status}</p>
                                             <p className="line-clamp-1">{ticketData.owner.name}</p>
                                         </div>
                                     </div>

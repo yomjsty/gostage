@@ -3,6 +3,7 @@ import { prismaAdapter } from "better-auth/adapters/prisma";
 import db from "./db";
 import { env } from "./env";
 import { admin as adminPlugin } from "better-auth/plugins"
+import { sendForgotPasswordEmail } from "@/actions/resend";
 
 export const auth = betterAuth({
     appName: "GoStage",
@@ -23,6 +24,13 @@ export const auth = betterAuth({
     },
     emailAndPassword: {
         enabled: true,
+        sendResetPassword: async ({ user, url }) => {
+            await sendForgotPasswordEmail({
+                email: user.email,
+                url: url,
+                subject: "Reset your password",
+            });
+        },
     },
     socialProviders: {
         github: {

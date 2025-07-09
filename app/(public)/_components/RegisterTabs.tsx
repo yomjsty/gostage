@@ -15,7 +15,6 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import Link from "next/link";
 import { RegisterWithEmailType } from "@/lib/zodSchema";
 import { registerWithEmailSchema } from "@/lib/zodSchema";
 import { EyeIcon, EyeOffIcon, Loader2 } from "lucide-react"
@@ -40,7 +39,25 @@ export default function RegisterTabs() {
   })
 
   function onSubmit(values: RegisterWithEmailType) {
-    console.log(values)
+    startEmailTransition(async () => {
+      await authClient.signUp.email({
+        email: values.email,
+        password: values.password,
+        name: values.name,
+        image: "",
+        callbackURL: "/"
+      }, {
+        onRequest: () => {
+          toast.loading("Signing up...")
+        },
+        onSuccess: () => {
+          toast.success("Redirecting. Please wait...")
+        },
+        onError: (ctx) => {
+          toast.error(ctx.error.message)
+        },
+      });
+    })
   }
 
   async function loginWithGithub() {
@@ -166,7 +183,10 @@ export default function RegisterTabs() {
               </FormItem>
             )}
           />
-          <Button type="submit" disabled={emailPending} className="w-full">Register</Button>
+          <Button type="submit" disabled={emailPending} className="w-full">
+            {emailPending && <Loader2 className="h-4 w-4 animate-spin" />}
+            Register
+          </Button>
         </form>
       </Form>
     </div>

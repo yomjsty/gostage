@@ -20,6 +20,38 @@ export const registerWithEmailSchema = z.object({
 
 export type RegisterWithEmailType = z.infer<typeof registerWithEmailSchema>
 
+export const setPasswordSchema = z.object({
+    password: z.string().min(1, "Password is required"),
+    confirmPassword: z.string().min(8, "Password must be at least 8 characters long"),
+}).refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
+})
+
+export type SetPasswordType = z.infer<typeof setPasswordSchema>
+
+export const changePasswordSchema = z.object({
+    revokeOtherSessions: z.boolean().optional(),
+    currentPassword: z.string().min(1, "Current password is required"),
+    newPassword: z.string().min(1, "New password is required"),
+    confirmNewPassword: z.string().min(1, "Confirm new password is required"),
+}).refine((data) => data.newPassword === data.confirmNewPassword, {
+    message: "Passwords do not match",
+    path: ["confirmNewPassword"],
+})
+
+export type ChangePasswordType = z.infer<typeof changePasswordSchema>
+
+export const resetPasswordSchema = z.object({
+    password: z.string().min(1, "Password is required"),
+    confirmPassword: z.string().min(1, "Confirm password is required"),
+}).refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
+})
+
+export type ResetPasswordType = z.infer<typeof resetPasswordSchema>
+
 export const eventMode = z.enum(["ONLINE", "OFFLINE"])
 
 export const eventSchema = z.object({

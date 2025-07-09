@@ -11,7 +11,7 @@ export const env = createEnv({
         UPLOADTHING_TOKEN: z.string().min(1),
         MIDTRANS_MERCHANT_ID: z.string().min(1),
         MIDTRANS_SERVER_KEY: z.string().min(1),
-        // RESEND_API_KEY: z.string().min(1),
+        RESEND_API_KEY: z.string().min(1),
         // STRIPE_SECRET_KEY: z.string().min(1),
         // STRIPE_WEBHOOK_SECRET: z.string().min(1),
     },

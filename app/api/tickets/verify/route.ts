@@ -62,7 +62,7 @@ export async function GET(req: Request) {
             return NextResponse.json({ error: "QR code missing" }, { status: 400 });
         }
 
-        const ticket = await verifyQRCodeTicket(qr);
+        const ticket = await verifyQRCodeTicket(qr, user.id);
 
         if (!ticket) {
             return NextResponse.json({ error: "Ticket not found" }, { status: 404 });
