@@ -61,7 +61,7 @@ export function RequestPasswordResetEmail({ email, url }: iAppProps) {
                             </Section>
 
                             <Text className="text-[14px] text-gray-600 mb-[16px] m-0">
-                                If the button doesn't work, copy and paste this link into your browser:
+                                If the button doesn&apos;t work, copy and paste this link into your browser:
                             </Text>
                             <Text className="text-[14px] text-blue-600 mb-[24px] m-0 break-all">
                                 <Link href={url} className="text-blue-600 underline">
@@ -76,7 +76,7 @@ export function RequestPasswordResetEmail({ email, url }: iAppProps) {
                                 Security Notice
                             </Heading>
                             <Text className="text-[14px] text-amber-700 m-0 mb-[8px]">
-                                • If you didn't request this password reset, please ignore this email
+                                • If you didn&apos;t request this password reset, please ignore this email
                             </Text>
                             <Text className="text-[14px] text-amber-700 m-0 mb-[8px]">
                                 • Never share your password or reset link with anyone
