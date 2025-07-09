@@ -79,8 +79,8 @@ export function OrganizerEventCard() {
                 await Promise.all([
                     queryClient.invalidateQueries({ queryKey: ['my-events'] }),
                     queryClient.invalidateQueries({ queryKey: ['events'] }),
+                    router.refresh()
                 ])
-                router.refresh();
             } else if (result.status === "error") {
                 toast.error(result.message)
             }

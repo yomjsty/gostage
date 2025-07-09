@@ -46,9 +46,9 @@ export function TicketCategoryTable({ eventId }: { eventId: string }) {
             if (result.status === "success") {
                 toast.success(result.message)
                 await Promise.all([
-                    queryClient.invalidateQueries({ queryKey: ["ticket-categories"] })
+                    queryClient.invalidateQueries({ queryKey: ["ticket-categories"] }),
+                    router.refresh()
                 ])
-                router.refresh();
             } else if (result.status === "error") {
                 toast.error(result.message)
             }

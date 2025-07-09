@@ -74,8 +74,8 @@ export function EditEventForm({ data }: iAppProps) {
                 await Promise.all([
                     queryClient.invalidateQueries({ queryKey: ['my-events'] }),
                     queryClient.invalidateQueries({ queryKey: ['events'] }),
+                    router.push(`/my-events`)
                 ])
-                router.push(`/my-events`)
             } else if (result.status === "error") {
                 toast.error(result.message)
             }
@@ -128,8 +128,8 @@ export function EditEventForm({ data }: iAppProps) {
                     await Promise.all([
                         queryClient.invalidateQueries({ queryKey: ['my-events'] }),
                         queryClient.invalidateQueries({ queryKey: ['events'] }),
+                        router.refresh()
                     ])
-                    router.refresh()
                 } else if (result.status === "error") {
                     toast.error(result.message)
                 }

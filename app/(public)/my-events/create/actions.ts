@@ -6,6 +6,7 @@ import { ApiResponse } from "@/lib/types";
 import { eventSchema, EventSchemaType } from "@/lib/zodSchema";
 import slugify from "slugify";
 import { randomUUID } from "crypto";
+import { revalidatePath } from "next/cache";
 
 async function generateUniqueSlug(baseSlug: string): Promise<string> {
     let slug = baseSlug;
@@ -71,6 +72,8 @@ export async function createEvent(values: EventSchemaType): Promise<ApiResponse>
                 userId: user.id,
             }
         })
+
+        revalidatePath("/")
 
         return {
             status: "success",

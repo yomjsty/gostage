@@ -64,8 +64,8 @@ export function EventForm() {
                 await Promise.all([
                     queryClient.invalidateQueries({ queryKey: ['my-events'] }),
                     queryClient.invalidateQueries({ queryKey: ['events'] }),
+                    router.push(`/my-events`)
                 ])
-                router.push(`/my-events`)
             } else if (result.status === "error") {
                 toast.error(result.message)
             }
