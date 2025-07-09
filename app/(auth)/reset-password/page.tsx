@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { resetPasswordSchema, ResetPasswordType } from '../../../lib/zodSchema';
-import { useState, useTransition } from "react";
+import { Suspense, useState, useTransition } from "react";
 import { EyeIcon, EyeOffIcon, Loader2 } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
@@ -14,7 +14,15 @@ import { cn } from "@/lib/utils";
 import { authClient } from "@/lib/auth-client";
 import { toast } from "sonner";
 
-export default function ResetPasswordPage() {
+export default function ResetPasswordRoute() {
+    return (
+        <Suspense>
+            <ResetPasswordPage />
+        </Suspense>
+    )
+}
+
+function ResetPasswordPage() {
     const searchParams = useSearchParams();
     const token = new URLSearchParams(searchParams).get("token");
     const router = useRouter()
