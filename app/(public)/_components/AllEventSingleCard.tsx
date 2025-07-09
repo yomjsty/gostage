@@ -35,7 +35,7 @@ export function AllEventSingleCard({ data }: iAppProps) {
         <Link href={`/event/${data.slug}`}>
             <Card className="p-0 gap-3">
                 <div className="relative">
-                    <Image src={thumbnailUrl} alt={data.title} className="h-48 w-full object-cover rounded-t-lg" width={600} height={400} />
+                    <Image src={thumbnailUrl} alt={data.title} className="h-48 w-full object-cover rounded-t-lg" width={600} height={400} priority />
                     <div className="absolute top-2 left-2">
                         <Badge variant={badgeVariant} className={badgeVariant === "destructive" ? "bg-red-500/90 text-white" : "bg-green-500/90 text-white"}>
                             {ticketStatus}

@@ -20,6 +20,8 @@ model User {
   name          String
   emailVerified Boolean
   image         String?
+  phoneNumber   String?
+  address       String?
   createdAt     DateTime
   updatedAt     DateTime
   sessions      Session[]
@@ -120,12 +122,11 @@ enum EventMode {
 }
 
 model TicketCategory {
-  id       String @id @default(uuid())
-  name     String
-  price    Int
-  quota    Int
-  sold     Int    @default(0)
-  reserved Int    @default(0)
+  id    String @id @default(uuid())
+  name  String
+  price Int
+  quota Int
+  sold  Int    @default(0)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -140,9 +141,10 @@ model TicketCategory {
 }
 
 model TicketReservation {
-  id     String @id @default(uuid())
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId String
+  id      String @id @default(uuid())
+  orderId String
+  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId  String
 
   category   TicketCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
   categoryId String
@@ -150,8 +152,8 @@ model TicketReservation {
   quantity Int
   status   ReservationStatus @default(PENDING)
 
-  createdAt DateTime @default(now())
-  expiresAt DateTime
+  createdAt DateTime  @default(now())
+  expiresAt DateTime?
 
   tickets Ticket[]
 
@@ -180,7 +182,8 @@ model Ticket {
   qrCode String  @unique
   isUsed Boolean @default(false)
 
-  createdAt DateTime @default(now())
+  createdAt DateTime  @default(now())
+  usedAt    DateTime?
 
   @@map("ticket")
 }

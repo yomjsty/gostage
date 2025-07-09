@@ -3,6 +3,7 @@ import { z } from "zod"
 export const loginWithEmailSchema = z.object({
     email: z.string().email("Invalid email address"),
     password: z.string().min(1, "Password is required"),
+    rememberMe: z.boolean().optional(),
 })
 
 export type LoginWithEmailType = z.infer<typeof loginWithEmailSchema>
@@ -45,3 +46,12 @@ export const ticketCategorySchema = z.object({
 })
 
 export type TicketCategorySchemaType = z.infer<typeof ticketCategorySchema>
+
+export const accountSchema = z.object({
+    name: z.string().min(1, "Name is required"),
+    email: z.string().email("Invalid email address"),
+    phoneNumber: z.string().optional(),
+    address: z.string().optional(),
+})
+
+export type AccountSchemaType = z.infer<typeof accountSchema>

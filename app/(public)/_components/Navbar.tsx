@@ -2,7 +2,7 @@
 
 import { SearchIcon } from "lucide-react"
 import Logo from "@/components/logo"
-import { Button } from "@/components/ui/button"
+import { Button, buttonVariants } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import {
   NavigationMenu,
@@ -20,6 +20,7 @@ import { AuthModal } from "./AuthModal"
 import { authClient } from "@/lib/auth-client"
 import { UserButton } from "@/components/user/UserButton"
 import { ModeToggle } from "@/components/mode-toggle"
+import { cn } from "@/lib/utils"
 
 const navigationLinks = [
   { href: "/", label: "Home" },
@@ -123,10 +124,20 @@ export function Navbar() {
         {isPending ? null : session ? (
           <UserButton name={session.user?.name} email={session.user?.email} image={session?.user.image ?? `https://avatar.vercel.sh/${session?.user.email}`} role={session?.user?.role ?? undefined} />
         ) : (
-          <div className="flex items-center gap-2">
-            <AuthModal type="register" name="Register" />
-            <AuthModal type="login" name="Login" />
-          </div>
+          <>
+            <div className="items-center gap-2 hidden md:flex">
+              <AuthModal type="register" name="Register" />
+              <AuthModal type="login" name="Login" />
+            </div>
+            <div className="flex items-center gap-2 md:hidden">
+              <Link className={cn(buttonVariants({ variant: "outline" }))} href="/register">
+                Register
+              </Link>
+              <Link className={cn(buttonVariants({ variant: "default" }))} href="/login">
+                Login
+              </Link>
+            </div>
+          </>
         )}
       </div>
     </header>

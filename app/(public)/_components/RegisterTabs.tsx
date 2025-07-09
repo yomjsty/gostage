@@ -1,3 +1,5 @@
+"use client"
+
 import { Button } from "@/components/ui/button";
 import { IoLogoGithub } from "react-icons/io";
 import { Separator } from "@/components/ui/separator"

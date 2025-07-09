@@ -45,7 +45,7 @@ export function TicketCategories({ ticketCategories }: iAppProps) {
 
     if (ticketCategories.length === 0) {
         return (
-            <div className="col-span-1 md:col-span-5 space-y-4">
+            <div>
                 <Card className="px-4 border-none shadow-none bg-gradient-to-b from-gray-500/20 via-gray-300/10 to-background">
                     <CardContent className="flex flex-col items-center justify-center py-12 px-6 text-center">
                         <div className="rounded-full bg-muted p-3 mb-4">
