@@ -3,6 +3,7 @@
 import { requireUser } from "@/dal/user/require-user";
 import db from "@/lib/db";
 import { ApiResponse } from "@/lib/types";
+import { revalidatePath } from "next/cache";
 
 export async function toggleFeatured(id: string): Promise<ApiResponse> {
     const user = await requireUser();
@@ -39,6 +40,10 @@ export async function toggleFeatured(id: string): Promise<ApiResponse> {
         })
 
         const action = newFeaturedStatus ? "set as" : "removed from";
+
+        revalidatePath("/dashboard")
+        revalidatePath("/")
+
         return {
             status: "success",
             message: `Event ${action} featured`,

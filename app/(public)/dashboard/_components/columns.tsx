@@ -54,8 +54,8 @@ function ActionsCell({ id, featured }: { id: string; featured: boolean }) {
                 await Promise.all([
                     queryClient.invalidateQueries({ queryKey: ['my-events'] }),
                     queryClient.invalidateQueries({ queryKey: ['events'] }),
+                    router.refresh()
                 ])
-                router.refresh()
             } else {
                 toast.error(result?.message || "An unexpected error occurred")
             }
