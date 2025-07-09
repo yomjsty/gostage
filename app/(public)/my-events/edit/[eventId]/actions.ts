@@ -5,6 +5,7 @@ import db from "@/lib/db";
 import { ApiResponse } from "@/lib/types";
 import { eventSchema, EventSchemaType, ticketCategorySchema, TicketCategorySchemaType } from "@/lib/zodSchema";
 import { randomUUID } from "crypto";
+import { revalidatePath } from "next/cache";
 import slugify from "slugify";
 
 async function generateUniqueSlug(baseSlug: string): Promise<string> {
@@ -127,6 +128,9 @@ export async function updateEventStatus(eventId: string, status: "PUBLISHED" | "
         })
 
         const action = status === "PUBLISHED" ? "published" : "drafted";
+
+        revalidatePath("/")
+
         return {
             status: "success",
             message: `Event ${action} successfully`

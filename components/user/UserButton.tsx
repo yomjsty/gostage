@@ -4,6 +4,7 @@ import {
     Home,
     LayoutDashboardIcon,
     LogOutIcon,
+    QrCodeIcon,
     TicketIcon,
     UserPenIcon,
 } from "lucide-react"
@@ -80,12 +81,20 @@ export function UserButton({ name, email, image, role }: iAppProps) {
                         </DropdownMenuItem>
                     )}
                     {canAccessEvents && (
-                        <DropdownMenuItem asChild>
-                            <Link href="/my-events">
-                                <CalendarFoldIcon size={16} className="opacity-60" aria-hidden="true" />
-                                <span>My Events</span>
-                            </Link>
-                        </DropdownMenuItem>
+                        <>
+                            <DropdownMenuItem asChild>
+                                <Link href="/scan-qr">
+                                    <QrCodeIcon size={16} className="opacity-60" aria-hidden="true" />
+                                    <span>Scan QR</span>
+                                </Link>
+                            </DropdownMenuItem>
+                            <DropdownMenuItem asChild>
+                                <Link href="/my-events">
+                                    <CalendarFoldIcon size={16} className="opacity-60" aria-hidden="true" />
+                                    <span>My Events</span>
+                                </Link>
+                            </DropdownMenuItem>
+                        </>
                     )}
                     <DropdownMenuItem asChild>
                         <Link href="/my-tickets">
