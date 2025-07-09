@@ -9,6 +9,11 @@ import { TicketManagement } from "./_components/TicketManagement";
 import { TicketStats } from "./_components/TicketStats";
 import { Suspense } from "react";
 
+export const metadata = {
+    title: "Edit Event",
+    description: "Edit your event information.",
+};
+
 export default async function EditEventPage({ params }: { params: Promise<{ eventId: string }> }) {
     const { eventId } = await params;
 

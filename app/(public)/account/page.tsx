@@ -5,6 +5,11 @@ import { AccountForm } from "./_components/AccountForm";
 import { Loader2 } from "lucide-react";
 import { SecurityForm } from "./_components/SecurityForm";
 
+export const metadata = {
+    title: "Account",
+    description: "Manage your account settings.",
+};
+
 export default function ProfilePage() {
     return (
         <div className="space-y-4">

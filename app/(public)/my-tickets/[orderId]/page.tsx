@@ -9,6 +9,11 @@ import { EventDetailsCard } from "./_components/EventDetailsCard"
 import { Card, CardContent } from "@/components/ui/card"
 import { Skeleton } from "@/components/ui/skeleton"
 
+export const metadata = {
+    title: "My Tickets",
+    description: "View your tickets.",
+};
+
 export default async function MyTicketSingularPage({ params }: { params: Promise<{ orderId: string }> }) {
     const { orderId } = await params
 

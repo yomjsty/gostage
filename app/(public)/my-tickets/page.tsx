@@ -10,6 +10,11 @@ import { SingleCardTicketEvent } from "./_components/SingleCardTicketEvent"
 import { Card, CardContent } from "@/components/ui/card"
 import { Skeleton } from "@/components/ui/skeleton"
 
+export const metadata = {
+    title: "My Tickets",
+    description: "View your tickets.",
+};
+
 export default function MyTicketsPage() {
     return (
         <div className="space-y-4 max-w-5xl mx-auto">

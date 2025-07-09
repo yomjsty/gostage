@@ -1,6 +1,11 @@
 import RegisterTabs from "@/app/(public)/_components/RegisterTabs";
 import Link from "next/link";
 
+export const metadata = {
+    title: "Register",
+    description: "Create an account to get started.",
+};
+
 export default function RegisterPage() {
     return (
         <div className="">

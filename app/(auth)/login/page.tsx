@@ -1,6 +1,11 @@
 import LoginTabs from "@/app/(public)/_components/LoginTabs";
 import Link from "next/link";
 
+export const metadata = {
+    title: "Login",
+    description: "Login to your GoStage account to buy and manage event tickets.",
+};
+
 export default function LoginPage() {
     return (
         <div className="">

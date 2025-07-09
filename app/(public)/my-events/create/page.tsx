@@ -4,6 +4,11 @@ import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
 import { EventForm } from "./_components/EventForm";
 
+export const metadata = {
+    title: "Create Event",
+    description: "Create a new event.",
+};
+
 export default function CreateEventPage() {
     return (
         <div className="space-y-4">

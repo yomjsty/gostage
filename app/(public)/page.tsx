@@ -7,6 +7,11 @@ import { getAllFeaturedEvents } from "@/dal/event/get-all-featured-events";
 import { Suspense } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 
+export const metadata = {
+  title: "Home",
+  description: "The easiest and cheapest ticket purchase is only at GoStage.",
+};
+
 export default function Home() {
   return (
     <div className="space-y-8 pt-8 pb-12">

@@ -3,6 +3,11 @@ import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { OrganizerEventCard } from "../_components/OrganizerEventCard";
 
+export const metadata = {
+    title: "My Events",
+    description: "Manage your events and tickets.",
+};
+
 export default function MyEventsPage() {
     return (
         <div className="space-y-4">
