@@ -16,12 +16,13 @@ export async function getAllEvents() {
             startDate: true,
             location: true,
             mode: true,
+            featured: true,
             categories: {
                 select: {
                     sold: true,
                     quota: true,
                 }
-            }
+            },
         }
     })
 }

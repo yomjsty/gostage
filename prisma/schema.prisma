@@ -99,6 +99,7 @@ model Event {
   mode              EventMode
   maxTicketsPerUser Int         @default(4)
   status            EventStatus @default(DRAFT)
+  featured          Boolean     @default(false)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
