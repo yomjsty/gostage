@@ -24,7 +24,7 @@ import { cn } from "@/lib/utils"
 
 const navigationLinks = [
   { href: "/", label: "Home" },
-  { href: "/explore", label: "Explore" }
+  { href: "/#", label: "Explore" }
 ]
 
 export function Navbar() {
