@@ -60,6 +60,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <meta name="google-site-verification" content="tU6KZzz81yDUZm_Sjer9t_8C6RprNr7EuBRZUwPkHME" />
       <body
         className={`${inter.variable} ${jetBrainsMono.variable}  antialiased`}
       >
