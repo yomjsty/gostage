@@ -15,10 +15,12 @@ export async function middleware(request: NextRequest) {
     const path = request.nextUrl.pathname;
 
     const isAuthPage = ["/login", "/register", "/forgot-password", "/reset-password"].includes(path);
-    const isPublicPage = path === "/" || path.startsWith("/event") || isAuthPage;
+    const isPublicPage = path === "/" || path.startsWith("/event") || isAuthPage ||
+        path === "/about" || path === "/contact" || path === "/faq" ||
+        path === "/terms" || path === "/privacy";
 
     if (!session) {
-        // Guest: hanya boleh akses / dan /event
+        // Guest: hanya boleh akses /, /event, /about, /contact, /faq, /terms, /privacy
         if (!isPublicPage) {
             return NextResponse.redirect(new URL("/", request.url));
         }
@@ -56,6 +58,6 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
     matcher: [
-        "/((?!_next/static|_next/image|favicon.ico|api).*)"
+        "/((?!_next/static|_next/image|favicon.ico|api|sitemap.xml|robots.txt).*)"
     ]
 };
