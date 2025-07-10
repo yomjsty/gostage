@@ -99,10 +99,6 @@ export function OrderDetails({ ticketCategories, selectedTickets, onRemoveTicket
                 return
             }
 
-            // if (result?.status === "error") {
-            //     toast.error(result?.message)
-            // }
-
             if (!result?.token) {
                 toast.error("Unknown error occurred. Please try again later.")
                 return

@@ -119,5 +119,4 @@ export function RequestPasswordResetEmail({ email, url }: iAppProps) {
             </Tailwind>
         </Html>
     )
-
 }
