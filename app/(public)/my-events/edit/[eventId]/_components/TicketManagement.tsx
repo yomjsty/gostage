@@ -9,7 +9,7 @@ export function TicketManagement({ eventId }: { eventId: string }) {
         <Card>
             <CardHeader>
                 <CardTitle>
-                    <div className="flex items-center justify-between">
+                    <div className="flex items-center justify-between gap-2">
                         <div className="flex flex-col gap-1">
                             <h1 className="font-bold">Ticket Management</h1>
                             <p className="text-sm text-muted-foreground font-normal">Manage your event ticket categories, pricing, and quota</p>

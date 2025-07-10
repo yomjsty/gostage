@@ -92,9 +92,9 @@ export function TicketCategories({ ticketCategories }: iAppProps) {
                                     ) : (
                                         <div className="flex flex-col items-end gap-1">
                                             <div className="flex items-center gap-2">
-                                                <Button variant="outline" onClick={() => handleRemoveTicket(category.id)} disabled={currentQty === 0} type="button">-</Button>
+                                                <Button size="icon" variant="outline" onClick={() => handleRemoveTicket(category.id)} disabled={currentQty === 0} type="button">-</Button>
                                                 <span>{currentQty}</span>
-                                                <Button variant="outline" onClick={() => handleAddTicket(category)} disabled={!canAdd} type="button">+</Button>
+                                                <Button size="icon" variant="outline" onClick={() => handleAddTicket(category)} disabled={!canAdd} type="button">+</Button>
                                             </div>
                                             {limitMessage && (
                                                 <p className="text-xs text-red-600 mt-1">{limitMessage}</p>

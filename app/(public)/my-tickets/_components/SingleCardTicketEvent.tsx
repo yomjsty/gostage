@@ -37,7 +37,7 @@ export function SingleCardTicketEvent({ event, total, orderId }: SingleCardTicke
                     <div className="flex flex-col justify-between h-full">
                         <div>
                             <p className="font-extrabold tracking-wide">{event.title}</p>
-                            <p className="text-sm text-muted-foreground">{event.location}</p>
+                            <p className="text-[13px] md:text-sm text-muted-foreground">{event.location}</p>
                         </div>
 
                         <div className="hidden md:flex items-center justify-between gap-2 mt-2">
@@ -66,7 +66,6 @@ export function SingleCardTicketEvent({ event, total, orderId }: SingleCardTicke
 
             <Separator className="md:hidden" />
 
-            {/* Mobile layout */}
             <CardContent className="p-4 md:hidden">
                 <div className="flex items-center justify-between">
                     <div className="flex flex-col">

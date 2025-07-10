@@ -280,12 +280,12 @@ export default function SingleEventPage({ eventSlug }: iAppProps) {
             </div>
 
             {/* Sticky Bottom Component */}
-            <div className="sticky bottom-0 left-0 right-0 bg-background border-t border-border p-4 z-50 md:hidden">
+            <div className="sticky bottom-0 left-0 right-0 bg-background border-t border-border py-4 z-50 md:hidden">
                 <div className="max-w-5xl mx-auto">
-                    <div className="flex items-center justify-between">
+                    <div className="flex items-center justify-between gap-4">
                         <div className="flex flex-col">
                             <span className="text-sm font-semibold">{event.title}</span>
-                            <span className="text-xs text-muted-foreground">{formatDate(event.startDate)} - {formatDate(event.endDate)} • {event.location}</span>
+                            <span className="text-xs text-muted-foreground">{formatDate(event.startDate)} • {event.location}</span>
                         </div>
                         {(!event.categories || event.categories.length === 0) ? (
                             <button

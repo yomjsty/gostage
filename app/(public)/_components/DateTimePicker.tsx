@@ -103,19 +103,19 @@ export function DateTimePicker({ value, onChange }: DateTimePickerProps) {
   ]
 
   return (
-    <div className="w-fit">
+    <div className="w-full md:w-fit">
       <div className="rounded-md border">
         <div className="flex max-sm:flex-col">
           <Calendar
             mode="single"
             selected={date}
             onSelect={handleDateSelect}
-            className="p-2 sm:pe-5"
+            className="p-2 sm:pe-5 w-full md:w-fit"
             disabled={[
               { before: today }
             ]}
           />
-          <div className="relative w-full max-sm:h-48 sm:w-40">
+          <div className="relative w-full max-sm:h-48 sm:w-40 shrink-0">
             <div className="absolute inset-0 py-4 max-sm:border-t">
               <ScrollArea className="h-full sm:border-s">
                 <div className="space-y-3">

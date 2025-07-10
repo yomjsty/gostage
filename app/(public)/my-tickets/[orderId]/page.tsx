@@ -64,7 +64,7 @@ async function RenderMyTicketSingularPage({ orderId }: { orderId: string }) {
 
         <div className="space-y-4">
             <EventDetailsCard ticket={tickets[0]} />
-            <h1 className="text-2xl font-bold">Your Tickets (6)</h1>
+            <h1 className="text-2xl font-bold">Your Tickets ({tickets.length})</h1>
             <div className="grid md:grid-cols-2 gap-4">
                 {tickets.map((ticket, index) => (
                     <SingularTicketCard key={ticket.id} ticket={ticket} index={index} />
