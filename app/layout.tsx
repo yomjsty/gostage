@@ -7,6 +7,8 @@ import { extractRouterConfig } from "uploadthing/server";
 import { ourFileRouter } from "./api/uploadthing/core";
 import { ReactQueryProvider } from "./react-query-provider";
 import { ThemeProvider } from "@/components/theme-provider";
+import { Analytics } from '@vercel/analytics/next';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 
 const inter = Inter({
   subsets: ["latin"],
@@ -73,6 +75,8 @@ export default function RootLayout({
             />
             <main>{children}</main>
             <Toaster />
+            <Analytics />
+            <SpeedInsights />
           </ReactQueryProvider>
         </ThemeProvider>
       </body>

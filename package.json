@@ -31,6 +31,8 @@
     "@tanstack/react-query": "^5.81.5",
     "@tanstack/react-table": "^8.21.3",
     "@uploadthing/react": "^7.3.2",
+    "@vercel/analytics": "^1.5.0",
+    "@vercel/speed-insights": "^1.2.0",
     "better-auth": "^1.2.12",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
