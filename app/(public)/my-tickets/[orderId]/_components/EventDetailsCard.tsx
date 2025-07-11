@@ -31,25 +31,25 @@ export function EventDetailsCard({ ticket }: iAppProps) {
                     <CardTitle className="text-2xl mb-4">{ticket.category.event.title}</CardTitle>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-600">
                         <div className="flex items-center gap-2">
-                            <CalendarDays className="h-4 w-4" />
+                            <CalendarDays className="h-4 w-4 shrink-0" />
                             <span>
                                 {ticket.category.event.startDate.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
                             </span>
                         </div>
 
                         <div className="flex items-center gap-2">
-                            <MapPin className="h-4 w-4" />
+                            <MapPin className="h-4 w-4 shrink-0" />
                             <span>{ticket.category.event.location}</span>
                         </div>
 
                         <div className="flex items-center gap-2">
-                            <Users className="h-4 w-4" />
+                            <Users className="h-4 w-4 shrink-0" />
                             <span className="font-semibold">{ticket.category.event.User.name}</span>
                         </div>
 
                         {ticket.category.event.locationLink && (
                             <Link href={ticket.category.event.locationLink} target="_blank" className={cn(buttonVariants({ variant: "outline" }))}>
-                                <ChevronRightIcon className="h-4 w-4" />
+                                <ChevronRightIcon className="h-4 w-4 shrink-0" />
                                 <span className="font-semibold">View Location</span>
                             </Link>
                         )}

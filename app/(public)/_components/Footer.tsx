@@ -10,7 +10,7 @@ const links = [
         href: '/privacy',
     },
     {
-        title: 'Faq',
+        title: 'FAQ',
         href: '/faq',
     },
     {
