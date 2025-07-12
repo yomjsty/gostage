@@ -63,28 +63,14 @@ export function OrderDetails({ ticketCategories, selectedTickets, onRemoveTicket
     const totalPrice = selectedList.reduce((sum, cat) => sum + (selectedTickets[cat.id] || 0) * cat.price, 0);
 
     const handleCheckout = () => {
+        // SECURE VERSION: Only send ticket IDs and quantities to server
         const ticketDetails = selectedList.map(cat => ({
             id: cat.id,
-            name: cat.name,
-            price: cat.price,
             quantity: selectedTickets[cat.id],
         }));
-        const event = ticketCategories[0]?.event;
-        const eventDetails = event ? {
-            title: event.title,
-            startDate: event.startDate.toLocaleDateString('en-GB', {
-                day: 'numeric',
-                month: 'long',
-                year: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit',
-            }),
-            location: event.location,
-        } : null;
+
         const payload = {
-            totalAmount: totalPrice,
             tickets: ticketDetails,
-            event: eventDetails,
         };
 
         startTransition(async () => {

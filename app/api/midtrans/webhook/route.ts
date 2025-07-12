@@ -3,16 +3,74 @@ import db from "@/lib/db";
 import { randomUUID } from "crypto";
 import { generateHostedQRCode } from "@/lib/generate-hosted-qr";
 import { sendETicketEmail } from "@/actions/resend";
+import { env } from "@/lib/env";
+import crypto from "crypto";
+
+// Verify Midtrans webhook signature
+function verifyWebhookSignature(body: string, signature: string): boolean {
+    const expectedSignature = crypto
+        .createHash('sha512')
+        .update(body + env.MIDTRANS_SERVER_KEY)
+        .digest('hex');
+
+    return crypto.timingSafeEqual(
+        Buffer.from(signature, 'hex'),
+        Buffer.from(expectedSignature, 'hex')
+    );
+}
 
 export async function POST(req: Request) {
     try {
-        const body = await req.json();
-        const { order_id, transaction_status, payment_type } = body;
+        const body = await req.text();
+        const signature = req.headers.get('x-signature-key');
+
+        // Verify webhook signature if provided
+        if (signature && !verifyWebhookSignature(body, signature)) {
+            console.error("❌ Invalid webhook signature");
+            return NextResponse.json({ error: "Invalid signature" }, { status: 401 });
+        }
+
+        const payload = JSON.parse(body);
+        const { order_id, transaction_status, payment_type, gross_amount, custom_field1 } = payload;
+
+        if (!order_id || !transaction_status) {
+            console.error("❌ Missing required fields in webhook payload");
+            return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
+        }
 
         const ticketReservations = await db.ticketReservation.findMany({
             where: { orderId: order_id },
-            select: { categoryId: true, quantity: true, id: true }
+            include: {
+                category: {
+                    select: {
+                        id: true,
+                        price: true,
+                        name: true
+                    }
+                }
+            }
         });
+
+        if (ticketReservations.length === 0) {
+            console.error("❌ No reservations found for order:", order_id);
+            return NextResponse.json({ error: "Order not found" }, { status: 404 });
+        }
+
+        // Validate payment amount
+        const expectedAmount = ticketReservations.reduce((sum, res) => sum + (res.category.price * res.quantity), 0);
+        if (gross_amount && parseInt(gross_amount) !== expectedAmount) {
+            console.error("❌ Payment amount mismatch:", { expected: expectedAmount, received: gross_amount });
+            return NextResponse.json({ error: "Amount mismatch" }, { status: 400 });
+        }
+
+        // Validate user ID if provided
+        if (custom_field1) {
+            const reservationUser = ticketReservations[0]?.userId;
+            if (reservationUser !== custom_field1) {
+                console.error("❌ User ID mismatch:", { expected: reservationUser, received: custom_field1 });
+                return NextResponse.json({ error: "User mismatch" }, { status: 400 });
+            }
+        }
 
         if (transaction_status === "pending") {
             await db.$transaction(async (tx) => {
@@ -43,7 +101,7 @@ export async function POST(req: Request) {
 
                         await db.ticket.create({
                             data: {
-                                ownerId: body.custom_field1,
+                                ownerId: custom_field1 || reservation.userId,
                                 categoryId: reservation.categoryId,
                                 reservationId: reservation.id,
                                 isUsed: false,
@@ -55,12 +113,12 @@ export async function POST(req: Request) {
             })
 
             const user = await db.user.findUnique({
-                where: { id: body.custom_field1 },
+                where: { id: custom_field1 || ticketReservations[0]?.userId },
                 select: { email: true }
             });
 
             if (!user?.email) {
-                console.error("❌ Email not found for user ID:", body.custom_field1);
+                console.error("❌ Email not found for user ID:", custom_field1 || ticketReservations[0]?.userId);
                 return NextResponse.json({ error: "Email not found" }, { status: 400 });
             }
 
@@ -131,7 +189,7 @@ export async function POST(req: Request) {
 
                         await db.ticket.create({
                             data: {
-                                ownerId: body.custom_field1,
+                                ownerId: custom_field1 || reservation.userId,
                                 categoryId: reservation.categoryId,
                                 reservationId: reservation.id,
                                 isUsed: false,
@@ -143,12 +201,12 @@ export async function POST(req: Request) {
             })
 
             const user = await db.user.findUnique({
-                where: { id: body.custom_field1 },
+                where: { id: custom_field1 || ticketReservations[0]?.userId },
                 select: { email: true }
             });
 
             if (!user?.email) {
-                console.error("❌ Email not found for user ID:", body.custom_field1);
+                console.error("❌ Email not found for user ID:", custom_field1 || ticketReservations[0]?.userId);
                 return NextResponse.json({ error: "Email not found" }, { status: 400 });
             }
 
