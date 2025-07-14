@@ -34,17 +34,22 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         },
     ];
 
-    const events = await getEvents();
-    const eventRoutes = events.map((event) => ({
-        url: `${baseUrl}/event/${event.slug}`,
-        lastModified: event.updatedAt.toISOString(),
-    }));
+    try {
+        const events = await getEvents();
+        const eventRoutes = events.map((event) => ({
+            url: `${baseUrl}/event/${event.slug}`,
+            lastModified: event.updatedAt.toISOString(),
+        }));
 
-    return [...staticRoutes, ...eventRoutes];
+        return [...staticRoutes, ...eventRoutes];
+    } catch (error) {
+        console.error("Failed to generate event routes for sitemap:", error);
+        return staticRoutes;
+    }
 }
 
 async function getEvents() {
-    const events = await db.event.findMany({
+    return await db.event.findMany({
         where: {
             status: "PUBLISHED",
         },
@@ -53,6 +58,4 @@ async function getEvents() {
             updatedAt: true,
         }
     });
-    return events;
 }
-
