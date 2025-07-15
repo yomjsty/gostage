@@ -4,6 +4,7 @@ import db from "./db";
 import { env } from "./env";
 import { admin as adminPlugin } from "better-auth/plugins"
 import { sendForgotPasswordEmail } from "@/actions/resend";
+import { nextCookies } from "better-auth/next-js";
 
 export const auth = betterAuth({
     appName: "GoStage",
@@ -42,6 +43,7 @@ export const auth = betterAuth({
         adminPlugin({
             defaultRole: "user",
             adminRoles: ["admin"],
-        })
+        }),
+        nextCookies()
     ]
 });
