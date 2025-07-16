@@ -66,9 +66,9 @@ function ResetPasswordPage() {
 
     return (
         <div className="">
-            <h1 className="text-2xl font-bold text-center mb-4">Forgot Password</h1>
+            <h1 className="text-2xl font-bold text-center mb-4">Reset Password</h1>
             <p className="text-center text-sm text-muted-foreground mb-4">
-                Please enter your email to reset your password.
+                Please enter your new password.
             </p>
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
